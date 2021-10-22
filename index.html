@@ -284,7 +284,7 @@
           <table style="width: 100%;">
             <tr>
               <td style="font-weight: bold;">Map Location:</td>
-              <td>LAT: {{ ip_lat }} &nbsp;&nbsp;&nbsp;LNG: {{ ip_lng }}</td>
+              <td>LAT: <span id="lat" value="{{ ip_lat }}">{{ ip_lat }}</span> &nbsp;&nbsp;&nbsp;LNG: <span id="lng" value="{{ ip_lng }}">{{ ip_lng }}</span></td>
             </tr>
           </table>
           <div id="map" style="width: 100%; height: 30em;"></div>
@@ -339,6 +339,23 @@
       </div>
     </footer>
   </body>
+  <script>
+    let longitude = document.getElementById("lng").getAttribute("value");
+    let latitude = document.getElementById("lat").getAttribute("value");
+    console.log(longitude)
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoicGF1Y2FicmFsIiwiYSI6ImNrdXBibWNjODBjNHUyb3A1MHl4OTNzN3IifQ.L_qIi8lwKVu8taenZ3Fl7w';
+    const map = new mapboxgl.Map({
+      container: 'map', // Container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // Map style to use
+      center: [longitude, latitude], // Starting position [long, lat]
+      zoom: 12, // Starting zoom level
+    });
+
+    const marker = new mapboxgl.Marker() // initialize a new marker
+      .setLngLat([longitude, latitude]) // Marker [lng, lat] coordinates
+      .addTo(map); // Add the marker to the map
+  </script>
 </html>
 
 
