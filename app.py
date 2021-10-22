@@ -9,6 +9,7 @@ app = Flask(__name__, template_folder='.')
 def home():
     ip_address = "192.168.254.1"
     ip_version = "ipv4"
+    ip_region = "Manila"
     ip_postal_code = "1800"
     ip_country = "Philippines"
     ip_timezone = "Asia/Manila"
@@ -20,6 +21,7 @@ def home():
     return render_template('index.html',
                            ip_address=ip_address,
                            ip_version=ip_version,
+                           ip_region=ip_region,
                            ip_postal_code=ip_postal_code,
                            ip_country=ip_country,
                            ip_timezone=ip_timezone,
