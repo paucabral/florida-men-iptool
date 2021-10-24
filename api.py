@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 from requests import get
 import json
 
@@ -29,3 +30,15 @@ def getOwnIP():
 # 2.2.2.2 Specific IPv4
 # 192.168.0.0 Invalid - Reserved IPv4 
 # 172.338.9.32 Invalid IPv4
+=======
+import json
+from requests import get
+
+
+def getSpecificIP(ipaddress):
+    pass
+
+
+def getIP():
+    pass
+>>>>>>> f04bf81eac70b764557ff73e3f836ed053fff48d
