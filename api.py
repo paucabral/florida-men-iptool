@@ -10,7 +10,12 @@ def getSpecificIP(IPAdd):
 
     urlGet = get("http://ipapi.co/{}/json/".format(IPAdd))
     dicUrl = urlGet.json()
-    return dicUrl
+    if 'error' not in dicUrl:      
+        filterDic = {item: dicUrl[item] for item in usedFields}
+        return filterDic
+    else:
+        errorDic = {item: dicUrl[item] for item in errorFields}
+        return errorDic
 
 def getOwnIP():
     urlGet = get("https://ipapi.co/json")
