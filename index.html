@@ -215,13 +215,28 @@
                 </div>
               </div>
             </form>
-            <script>
+            <!-- <script>
               $("#searchIP").submit(function (e) {
+                const endpoint = "https://enu0vhvkktwt8k1.m.pipedream.net"
+
                 let formData = JSON.stringify($("#searchIP").serializeArray());
                 e.preventDefault()
+
+                const headers = new Headers()
+                headers.append("Content-Type", "application/json")
+
+                const options = {
+                  method: "POST",
+                  headers,
+                  mode: "cors",
+                  body: JSON.stringify(formData),
+                }
+
+                fetch(endpoint, options)
+
                 console.log(formData)
               });
-            </script>
+            </script> -->
           </div>
         </div>
       </div>
