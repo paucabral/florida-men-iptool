@@ -1,17 +1,20 @@
 <!-- Expected Values -->
-{{ ip_address }}          <br> <!-- Public IPv4/IPv6 Address: -->
-{{ ip_version }}          <br> <!-- IP version -->
-{{ ip_postal_code }}      <br> <!-- Postal Code: -->
-{{ ip_country }}          <br> <!-- Country: -->
-{{ ip_timezone }}         <br> <!-- Time Zone: -->
-{{ ip_calling_code }}     <br> <!-- Calling Code: -->
-{{ ip_asn }}              <br> <!-- Autonomous System Number: -->
-{{ ip_isp }}              <br> <!-- Internet Service Provider: -->
-{{ ip_lat }}              <br> <!-- Latitude: -->
-{{ ip_lng }}              <br> <!-- Longitude: -->
+{% if not ip_context.error %}
+{{ ip_context.address }}          <br> <!-- Public IPv4/IPv6 Address: -->
+{{ ip_context.version }}          <br> <!-- IP version -->
+{{ ip_context.postal_code }}      <br> <!-- Postal Code: -->
+{{ ip_context.country }}          <br> <!-- Country: -->
+{{ ip_context.timezone }}         <br> <!-- Time Zone: -->
+{{ ip_context.calling_code }}     <br> <!-- Calling Code: -->
+{{ ip_context.asn }}              <br> <!-- Autonomous System Number: -->
+{{ ip_context.isp }}              <br> <!-- Internet Service Provider: -->
+{{ ip_context.lat }}              <br> <!-- Latitude: -->
+{{ ip_context.lng }}              <br> <!-- Longitude: -->
 <!-- End Expected Values -->
-
+{% else %}
 <!-- Error Handling -->
-{{ error }}               <br> <!-- Error boolean -->
-{{ reason }}              <br> <!-- Error reason -->
+<!-- Add some if and else here. --> 
+{{ ip_context.error }}												<br> <!-- Error context -->
+{{ ip_context.reason }}              				<br> <!-- Error reason -->
 <!-- Error Handling -->
+{% endif %}

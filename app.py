@@ -14,29 +14,30 @@ def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
 
     ip_info = {}
 
-    if req_ip_data: # Check if the variable has a content.
-        if list(req_ip_data.keys()) != errorFields and list(req_ip_data.keys()) != rateLimitedFields:
-            # Ensure that the given response doesn't contain fields declared under `errorFields` and `rateLimitedFields`.
-            ip_info = {
-                "address": req_ip_data["ip"],
-                "version": req_ip_data["version"],
-                "region": req_ip_data["region"],
-                "postal_code": req_ip_data["postal"],
-                "country": req_ip_data["country"],
-                "tz": req_ip_data["timezone"],
-                "calling_code": req_ip_data["country_calling_code"],
-                "asn": req_ip_data["asn"],
-                "isp": req_ip_data["org"],
-                "lat": req_ip_data["latitude"],
-                "lng": req_ip_data["longitude"]
-            }
-        
+    if list(req_ip_data.keys()) != errorFields and list(req_ip_data.keys()) != rateLimitedFields:
+        # Ensure that the given response doesn't contain fields declared under `errorFields` and `rateLimitedFields`.
+        ip_info = {
+            "address": req_ip_data["ip"],
+            "version": req_ip_data["version"],
+            "region": req_ip_data["region"],
+            "postal_code": req_ip_data["postal"],
+            "country": req_ip_data["country"],
+            "tz": req_ip_data["timezone"],
+            "calling_code": req_ip_data["country_calling_code"],
+            "asn": req_ip_data["asn"],
+            "isp": req_ip_data["org"],
+            "lat": req_ip_data["latitude"],
+            "lng": req_ip_data["longitude"]
+        }
 
     else: # Evaluates to None. Map other errors for rate-limited and actual error given data. 
         ip_info = {
-            "error": req_ip_data["ip"] if list(req_ip_data.keys()) == errorFields else req_ip_data["reason"],
-            "reason": req_ip_data["reason"] if list(req_ip_data.keys()) != errorFields else req_id_data["message"]
+            "error": req_ip_data.get("ip") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("reason"),
+            "reason": req_ip_data.get("reason") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("message")
         }
+
+    print(ip_info)
+
 
     return ip_info
 
