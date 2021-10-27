@@ -1,17 +1,375 @@
-<!-- Expected Values -->
-{{ ip_address }}          <br> <!-- Public IPv4/IPv6 Address: -->
-{{ ip_version }}          <br> <!-- IP version -->
-{{ ip_postal_code }}      <br> <!-- Postal Code: -->
-{{ ip_country }}          <br> <!-- Country: -->
-{{ ip_timezone }}         <br> <!-- Time Zone: -->
-{{ ip_calling_code }}     <br> <!-- Calling Code: -->
-{{ ip_asn }}              <br> <!-- Autonomous System Number: -->
-{{ ip_isp }}              <br> <!-- Internet Service Provider: -->
-{{ ip_lat }}              <br> <!-- Latitude: -->
-{{ ip_lng }}              <br> <!-- Longitude: -->
-<!-- End Expected Values -->
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8' />
+    <title>Florida Men | IP Tool</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1' />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  </head>
+  <style>
+    html {
+      font-family: "Roboto Cn", sans-serif;
+    }
+  
+    body {
+      background: linear-gradient(to right, rgba(0, 0, 0, .6), rgba(0, 0, 0, .4)), url('https://www.ariba.com/-/media/aribacom/page-images/03-ariba-network/0320000aribanetworkforsuppliers/hero_aribanetworkforsuppliers.jpg?h=650&la=en-US&w=1600&hash=5EE1AE9E3327FDD186A8942AE55828E490CC17EE') no-repeat center fixed;
+      background-size: cover;
+    }
+  
+    header {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(to bottom, rgba(0, 0, 0, .8), rgba(0, 0, 0, .05));
+      color: #eee;
+    }
+  
+    header a {
+      color: #eee;
+      text-decoration: none;
+    }
+  
+    header a:hover {
+      color: rgb(38, 241, 255);
+    }
+  
+    .brand {
+      font-weight: 1000;
+      color: rgb(38, 241, 255);
+    }
+  
+    nav ul {
+      display: flex;
+      text-transform: uppercase;
+    }
+  
+    nav ul li {
+      list-style: none;
+    }
+  
+    nav ul li a {
+      padding: 1rem 0;
+      margin: 0;
+      position: relative;
+      letter-spacing: 1px;
+    }
+  
+    nav ul li a:last-child {
+      margin-right: 0;
+    }
+  
+    nav ul li a::before,
+    nav ul li a::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      background-color: crimson;
+      left: 0;
+      transform: scaleX(0);
+      transition: all .5s;
+    }
+  
+    nav ul li a::before {
+      top: 0;
+      transform-origin: left;
+    }
+  
+    nav ul li a::after {
+      bottom: 0;
+      transform-origin: right;
+    }
+  
+    .nav-item:hover {
+      color: rgb(38, 241, 255) !important;
+    }
+  
+    .overlay {
+      background-color: rgba(0, 0, 0, .95);
+      position: fixed;
+      right: 0;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      transition: opacity 650ms;
+      transform: scale(0);
+      opacity: 0;
+      display: none;
+    }
+  
+    .context-dark,
+    .bg-gray-dark,
+    .bg-primary {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  
+    .footer-classic a,
+    .footer-classic a:focus,
+    .footer-classic a:active {
+      color: #ffffff;
+      text-decoration: none;
+    }
+  
+    .nav-list li {
+      padding-top: 5px;
+      padding-bottom: 5px;
+    }
+  
+    footer a:hover {
+      color: rgb(38, 241, 255);
+    }
+  
+    .nav-list li a:hover:before {
+      margin-left: 0;
+      opacity: 1;
+      visibility: visible;
+    }
+  
+    ul,
+    ol {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .social-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      padding: 23px;
+      font: 900 13px/1 "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  
+    .social-container .col {
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+  
+    .nav-list li a:before {
+      content: "\ ";
+      font: 400 21px/1;
+      color: #4d6de6;
+      display: inline-block;
+      vertical-align: baseline;
+      margin-left: -28px;
+      margin-right: 7px;
+      opacity: 0;
+      visibility: hidden;
+      transition: .22s ease;
+    }
+  
+    .search:hover {
+      background-color: rgb(63, 192, 201);
+    }
+  
+    table {
+      border-collapse: separate;
+      border-spacing: 0.3em;
+    }
+  </style>
+  <body>
+    <header>
+      <div class="container my-3">
+        <nav class="navbar navbar-expand-lg navbar-dark container-fluid">
+          <div class="container">
+            <a style="font-size: x-large; font-weight: bold;" class="navbar-brand" href="/">FloridaMen<span class="brand">IPTOOL</span></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
+              aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <div class="collapse navbar-collapse align-items-center" id="navbarTogglerDemo02">
+              <ul class="nav navbar-nav ms-auto align-items-center">
+                <li><a href="#" class="nav-item nav-link" style="color: #eee;"><i class="fa fa-home fa-3"
+                      aria-hidden="true"></i> Home</a></li>
+                <li><a href="#about" class="nav-item nav-link" style="color: #eee;"><i class="fa fa-user fa-3"
+                      aria-hidden="true"></i> About</a></li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    
+    </div>
+    <div class="container col-lg-12 mb-5">
+      <div class="overlay"></div>
+      <div class="row">
+        <div class="col p-4" style="width: 100%">
+          <div>
+            <form id="searchIP" method="POST">
+              <div class="input-group has-feedback mb-3">
+                <input name="ip_address" type="text" class="form-control" placeholder="Public IP Address (in either IPv4 or IPv6 format):" aria-label="IP Address"
+                  aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                  <button type="submit" class="search btn-secondary input-group-text text-white" id="basic-addon2"><i
+                      class="fas fa-search"></i>&nbsp;&nbsp;SEARCH</button>
+                </div>
+              </div>
+            </form>
+            <!-- <script>
+              $("#searchIP").submit(function (e) {
+                const endpoint = "https://enu0vhvkktwt8k1.m.pipedream.net"
 
-<!-- Error Handling -->
-{{ error }}               <br> <!-- Error boolean -->
-{{ reason }}              <br> <!-- Error reason -->
-<!-- Error Handling -->
+                let formData = JSON.stringify($("#searchIP").serializeArray());
+                e.preventDefault()
+
+                const headers = new Headers()
+                headers.append("Content-Type", "application/json")
+
+                const options = {
+                  method: "POST",
+                  headers,
+                  mode: "cors",
+                  body: JSON.stringify(formData),
+                }
+
+                fetch(endpoint, options)
+
+                console.log(formData)
+              });
+            </script> -->
+          </div>
+        </div>
+      </div>
+    
+      {% if error == True %}
+      <!-- ERROR -->
+      <div name="invalid" style="min-height: 40vh;">
+        <div class="container-fluid mb-5 p-5 my-3"
+          style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
+          <h1 class="text-white" style="text-align: center;">Error</h1>
+          <p class="text-white" style="text-align: center;">Reason: {{ reason }}</p>
+        </div>
+      </div>
+      {% else %}
+      <!-- SUCCESS -->
+      <div name="success" class="row" style="color: white;">
+        <div class="col p-5 mx-3 my-3"
+          style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
+          <table style="width: 100%;">
+            <tr>
+              {% if ip_version == 'IPv6' %}
+              <td style="font-weight: bold;">Public IPv6 Address:</td>
+              {% else %}
+              <td style="font-weight: bold;">Public IPv4 Address:</td>
+              {% endif %}
+              <td>{{ ip_address }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Region:</td>
+              <td>{{ ip_region }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Postal Code:</td>
+              <td>{{ ip_postal_code }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Country:</td>
+              <td>{{ ip_country }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Time Zone:</td>
+              <td>{{ ip_timezone }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Calling Code:</td>
+              <td>{{ ip_calling_code }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Autonomous System Number:</td>
+              <td>{{ ip_asn }}</td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">Internet Service Provider:</td>
+              <td>{{ ip_isp }}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col p-2 mx-3 my-3"
+          style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
+          <table style="width: 100%;">
+            <tr>
+              <td style="font-weight: bold;">Map Location:</td>
+              <td>LAT: <span id="lat" value="{{ ip_lat }}">{{ ip_lat }}</span> &nbsp;&nbsp;&nbsp;LNG: <span id="lng" value="{{ ip_lng }}">{{ ip_lng }}</span></td>
+            </tr>
+          </table>
+          <div id="map" style="width: 100%; height: 30em;"></div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    <footer id="about" class="section footer-classic context-dark bg-image p-5"
+      style="background: #0f1318; bottom: 0; width: 100%;">
+      <div class="container">
+        <div class="row row-30">
+          <div class="col-md-4 col-xl-5">
+            <div class="pr-xl-4">
+              <a class="brand" href="#" style="text-decoration: none;">
+                <h2><a href="#" style="text-decoration: none;">FloridaMen<span class="brand">IPTOOL</span></a></h2>
+              </a>
+              <p>
+                An IP Tool powered by <b>IP address location API (IPAPI)</b>.
+              </p>
+              <p class="rights"><span>© </span><span class="copyright-year">2021</span><span> </span><span>Team Florida
+                  Men</span><span>. </span><span>All Rights Reserved.</span></p>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h4>Developed by</h4>
+            <dl class="contact-list">
+              <dt>Jose Paulo C. Cabral</dt>
+              <dd><a href="mailto:#">qjpccabral@tip.edu.ph</a></dd>
+            </dl>
+            <dl class="contact-list">
+              <dt>Janrey T. Licas</dt>
+              <dd><a href="mailto:#">qjtlicas@tip.edu.ph</a></dd>
+            </dl>
+            <dl class="contact-list">
+              <dt>Joshua Albert T. Lopez</dt>
+              <dd><a href="mailto:#">qjatlopez@tip.edu.ph</a></dd>
+              </dd>
+            </dl>
+          </div>
+          <div class="col-md-4 col-xl-3">
+            <h5>Links</h5>
+            <ul class="nav-list">
+              <li><a href="https://github.com/paucabral/florida-men-iptool"><i class="fab fa-github"></i> Github Repository</a></li>
+              <li><a href="https://ipapi.co/api"><i class="fas fa-cog"></i> IP API</a></li>
+              <li><a href="https://docs.mapbox.com/api/overview/"><i class="fas fa-map-marker-alt"></i> MapBox</a></li>
+              <li><a href="https://getbootstrap.com/"><i class="fab fa-bootstrap"></i> Bootstrap</a></li>
+            </ul>
+            <br>
+            <a href="#"><i class="fas fa-level-up-alt"></i> Back to top</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+  </body>
+  <script>
+    let longitude = document.getElementById("lng").getAttribute("value");
+    let latitude = document.getElementById("lat").getAttribute("value");
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoicGF1Y2FicmFsIiwiYSI6ImNrdXBibWNjODBjNHUyb3A1MHl4OTNzN3IifQ.L_qIi8lwKVu8taenZ3Fl7w';
+    const map = new mapboxgl.Map({
+      container: 'map', // Container ID
+      style: 'mapbox://styles/mapbox/streets-v11', // Map style to use
+      center: [longitude, latitude], // Starting position [long, lat]
+      zoom: 12, // Starting zoom level
+    });
+
+    const marker = new mapboxgl.Marker() // initialize a new marker
+      .setLngLat([longitude, latitude]) // Marker [lng, lat] coordinates
+      .addTo(map); // Add the marker to the map
+  </script>
+</html>
+
+
