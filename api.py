@@ -3,16 +3,23 @@ import json
 
 #free account url structure https://ipapi.co/8.8.8.8/json/
 # accessKey = 'd44cff8af5f8c516042fcf9b21ea84ce' (for "ipapi.com")
+
 usedFields = ['ip', 'version', 'country', 'region', 'postal', 'country', 'timezone', 'country_calling_code', 'asn', 'org', 'latitude', 'longitude']
-errorFields = ['ip', 'reason']
+errorFields = ['ip', "error", 'reason']
+rateLimitedFields = ['error', 'reason', 'message']
 
 def getSpecificIP(IPAdd):
 
     urlGet = get("http://ipapi.co/{}/json/".format(IPAdd))
     dicUrl = urlGet.json()
-    if 'error' not in dicUrl:      
+
+    if 'error' not in dicUrl:
         filterDic = {item: dicUrl[item] for item in usedFields}
         return filterDic
+
+    elif "error" in dicUrl: # If rate-limited, just return that.
+        return dicUrl
+
     else:
         errorDic = {item: dicUrl[item] for item in errorFields}
         return errorDic
@@ -20,9 +27,19 @@ def getSpecificIP(IPAdd):
 def getOwnIP():
     urlGet = get("https://ipapi.co/json")
     dicUrl = urlGet.json()
-    filterDic = {item: dicUrl[item] for item in usedFields}
-    return filterDic
-    
+
+    # This also requires handling on rateLimited as well.
+    if "error" not in dicUrl:
+        filterDic = {item: dicUrl[item] for item in usedFields}
+        return filterDic
+
+    elif "error" in dicUrl: # If rate-limited, just return that.
+        return dicUrl
+
+    else:
+        errorDic = {item: dicUrl[item] for item in errorFields}
+        return errorDic
+
 
 # IP address types:
 # 2001:4451:87c5:5b00:6d85:a283:46c7:af40 Own IPv6
