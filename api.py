@@ -13,8 +13,6 @@ def getSpecificIP(IPAdd):
     urlGet = get("http://ipapi.co/{}/json/".format(IPAdd))
     dicUrl = urlGet.json()
 
-    print(dicUrl)
-
     if 'error' not in dicUrl:
         filterDic = {item: dicUrl[item] for item in usedFields}
         return filterDic
@@ -29,8 +27,6 @@ def getSpecificIP(IPAdd):
 def getOwnIP():
     urlGet = get("https://ipapi.co/json")
     dicUrl = urlGet.json()
-
-    print(dicUrl)
 
     # This also requires handling on rateLimited as well.
     if "error" not in dicUrl:

@@ -7,7 +7,6 @@ app = Flask(__name__, template_folder='.')
 
 # ! This function handles both home() and searchIP() into one function.
 def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
-    
     assert type(given_ip) is str or given_ip is None, "The given IP is not a string! This is an error."
 
     req_ip_data = getOwnIP() if not given_ip else getSpecificIP(given_ip) # Assumes that given_ip has length.
@@ -35,9 +34,6 @@ def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
             "error": req_ip_data.get("ip") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("reason"),
             "reason": req_ip_data.get("reason") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("message")
         }
-
-    print(ip_info)
-
 
     return ip_info
 
