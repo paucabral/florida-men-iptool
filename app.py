@@ -11,45 +11,65 @@ def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
 
     req_ip_data = getOwnIP() if not given_ip else getSpecificIP(given_ip) # Assumes that given_ip has length.
 
-    ip_info = {}
-
-    if list(req_ip_data.keys()) != errorFields and list(req_ip_data.keys()) != rateLimitedFields:
-        # Ensure that the given response doesn't contain fields declared under `errorFields` and `rateLimitedFields`.
-        ip_info = {
-            "address": req_ip_data["ip"],
-            "version": req_ip_data["version"],
-            "region": req_ip_data["region"],
-            "postal_code": req_ip_data["postal"],
-            "country": req_ip_data["country"],
-            "tz": req_ip_data["timezone"],
-            "calling_code": req_ip_data["country_calling_code"],
-            "asn": req_ip_data["asn"],
-            "isp": req_ip_data["org"],
-            "lat": req_ip_data["latitude"],
-            "lng": req_ip_data["longitude"]
-        }
-
-    else: # Evaluates to None. Map other errors for rate-limited and actual error given data. 
-        ip_info = {
-            "error": req_ip_data.get("ip") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("reason"),
-            "reason": req_ip_data.get("reason") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("message")
-        }
-
-    return ip_info
+    # Ensure that the given response doesn't contain fields declared under `errorFields` and `rateLimitedFields`.
+    return {
+        "address": req_ip_data.get("ip", None),
+        "version": req_ip_data.get("version", None),
+        "region": req_ip_data.get("region", None),
+        "postal_code": req_ip_data.get("postal", None),
+        "country": req_ip_data.get("country", None),
+        "tz": req_ip_data.get("timezone", None),
+        "calling_code": req_ip_data.get("country_calling_code", None),
+        "asn": req_ip_data.get("asn", None),
+        "isp": req_ip_data.get("org", None),
+        "lat": req_ip_data.get("latitude", None),
+        "lng": req_ip_data.get("longitude", None),
+        "error": True if list(req_ip_data.keys()) == errorFields or list(req_ip_data.keys()) == rateLimitedFields else False,
+        "reason": req_ip_data.get("reason") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("message")
+    }
 
 @app.route("/", methods=['GET'])
 def home():
-    return render_template('index.html', ip_context = ip_query(None))
-
+    fetched_data = ip_query(None)
+    return render_template('index.html',
+                           ip_address = fetched_data["address"],
+                           ip_version = fetched_data["version"],
+                           ip_region = fetched_data["region"],
+                           ip_postal_code = fetched_data["postal_code"],
+                           ip_country = fetched_data["country"],
+                           ip_timezone = fetched_data["tz"],
+                           ip_calling_code = fetched_data["calling_code"],
+                           ip_asn = fetched_data["asn"],
+                           ip_isp = fetched_data["isp"],
+                           ip_lat = fetched_data["lat"],
+                           ip_lng = fetched_data["lng"],
+                           error = fetched_data["error"],
+                           reason = fetched_data["reason"]
+        )
 
 @app.route("/", methods=['POST'])
 def searchIP():
     # For test purposes, use "request.json.get()" instead. Error is not handled here.
+
     # ip_address = request.form.get('ip_address') # Before
     ip_address = request.json.get("ip_address") # After
+    fetched_data = ip_query(ip_address)
 
-    return render_template('index.html', ip_context = ip_query(ip_address))
-
+    return render_template('index.html',
+                           ip_address = fetched_data["address"],
+                           ip_version = fetched_data["version"],
+                           ip_region = fetched_data["region"],
+                           ip_postal_code = fetched_data["postal_code"],
+                           ip_country = fetched_data["country"],
+                           ip_timezone = fetched_data["timezone"],
+                           ip_calling_code = fetched_data["calling_code"],
+                           ip_asn = fetched_data["asn"],
+                           ip_isp = fetched_data["isp"],
+                           ip_lat = fetched_data["lat"],
+                           ip_lng = fetched_data["lng"],
+                           error = fetched_data["error"],
+                           reason = fetched_data["reason"]
+        )
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
