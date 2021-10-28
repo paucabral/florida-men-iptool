@@ -6,11 +6,8 @@ import os
 app = Flask(__name__, template_folder='.')
 
 # ! This function handles both home() and searchIP() into one function.
-
-
 def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
-    assert type(
-        given_ip) is str or given_ip is None, "The given IP is not a string! This is an error."
+    assert type(given_ip) is str or given_ip is None, "The given IP is not a string! This is an error."
 
     # Assumes that given_ip has length.
     req_ip_data = getOwnIP() if not given_ip else getSpecificIP(given_ip)
@@ -22,23 +19,26 @@ def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
         "region": req_ip_data.get("region", None),
         "postal_code": req_ip_data.get("postal", None),
         "country": req_ip_data.get("country", None),
-        "tz": req_ip_data.get("timezone", None),
+        "timezone": req_ip_data.get("timezone", None),
         "calling_code": req_ip_data.get("country_calling_code", None),
         "asn": req_ip_data.get("asn", None),
         "isp": req_ip_data.get("org", None),
         "lat": req_ip_data.get("latitude", None),
         "lng": req_ip_data.get("longitude", None),
-        "error": True if list(req_ip_data.keys()) == errorFields or list(req_ip_data.keys()) == rateLimitedFields else False,
-        "reason": req_ip_data.get("reason") if list(req_ip_data.keys()) == errorFields else req_ip_data.get("message")
+
+    } if "error" not in req_ip_data.keys() else {
+        "error": req_ip_data.get("error", None),
+        "reason": req_ip_data.get("reason", None)
     }
 
 
 @app.route("/", methods=['GET'])
 def home():
     fetched_data = ip_query(None)
-    data = getOwnIP()
-    if "error" in data.keys() == True:
-        return render_template('index.html', error=True, reason=data["reason"])
+
+    if "error" in fetched_data.keys():
+        return render_template('index.html', error=fetched_data["error"], reason=fetched_data["reason"])
+
     else:
         return render_template('index.html',
                                ip_address=fetched_data["address"],
@@ -46,7 +46,7 @@ def home():
                                ip_region=fetched_data["region"],
                                ip_postal_code=fetched_data["postal_code"],
                                ip_country=fetched_data["country"],
-                               ip_timezone=fetched_data["tz"],
+                               ip_timezone=fetched_data["timezone"],
                                ip_calling_code=fetched_data["calling_code"],
                                ip_asn=fetched_data["asn"],
                                ip_isp=fetched_data["isp"],
@@ -57,14 +57,12 @@ def home():
 
 @app.route("/", methods=['POST'])
 def searchIP():
-    # For test purposes, use "request.json.get()" instead. Error is not handled here.
-
-    ip_address = request.form.get('ip_address')  # Before
-    # ip_address = request.json.get("ip_address") # After
+    ip_address = request.form.get('ip_address')
     fetched_data = ip_query(ip_address)
-    data = getSpecificIP(ip_address)
-    if "error" in data.keys():
-        return render_template('index.html', error=True, reason=data["reason"])
+
+    if "error" in fetched_data.keys():
+        return render_template('index.html', error=fetched_data["error"], reason=fetched_data["reason"])
+
     else:
         return render_template('index.html',
                                ip_address=fetched_data["address"],
@@ -72,7 +70,7 @@ def searchIP():
                                ip_region=fetched_data["region"],
                                ip_postal_code=fetched_data["postal_code"],
                                ip_country=fetched_data["country"],
-                               ip_timezone=fetched_data["tz"],
+                               ip_timezone=fetched_data["timezone"],
                                ip_calling_code=fetched_data["calling_code"],
                                ip_asn=fetched_data["asn"],
                                ip_isp=fetched_data["isp"],
