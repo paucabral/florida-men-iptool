@@ -1,3 +1,8 @@
+# Avoid relative import error by pre-starting the script by going one-level.
+import sys
+sys.path.append("../")
+
+# Imports from One-Level
 from app import app
 from api import errorFields, rateLimitedFields, usedFields
 from typing import Final
