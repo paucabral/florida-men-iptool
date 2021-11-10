@@ -14,11 +14,7 @@ class apiUnittest(TestCase):
         self.assertIsNotNone(getSpecificIP(validIP))        #Working IP (Specific)
         self.assertIsNotNone(getSpecificIP(invalidIP))      #Invalid IP (Specific)
     
-    #Compare the used fields from return, and the keys as list of accepted IP
-    def testGSIP_acceptIP(self):
-        self.assertEqual(usedFields, list(getSpecificIP(validIP).keys()))
-
-    #Compare the used fields from return, and the keys as list of invalid IP
+    #Compare the error fields from return, and the keys as list of invalid IP
     def testGSIP_invalidIP(self):
         self.assertEqual(errorFields, list(getSpecificIP(invalidIP).keys()))
 
