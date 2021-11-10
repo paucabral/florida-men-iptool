@@ -1,7 +1,7 @@
 from unittest import TestCase, main
 import sys
-sys.path.append('/florida-men-iptool')
-from api import getSpecificIP, getOwnIP, usedFields, errorFields
+sys.path.append('../')
+from api import getSpecificIP, getOwnIP, usedFields, errorFields, test
 
 class apiUnittest(TestCase):
     #Validate API if returns exist for captuing specific IP
