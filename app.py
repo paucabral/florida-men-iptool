@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request
 from api import errorFields, getSpecificIP, getOwnIP, rateLimitedFields
 from typing import Any, Dict, Union # For type-annotations.
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__)
 
 # ! This function handles both home() and searchIP() into one function.
 def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
