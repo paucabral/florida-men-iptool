@@ -232,75 +232,20 @@
             </form>
           </div>
         </div>
-      </div>
-      
-      <!-- Results display body with error handling. -->
-      {% if error == True %}
-      <!-- ERROR - Display the error and reason. -->
-      <div name="invalid" style="min-height: 40vh;">
-        <div class="container-fluid mb-5 p-5 my-3"
-          style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
-          <h1 class="text-white" style="text-align: center;">Error</h1>
-          <p class="text-white" style="text-align: center;">Reason: {{ reason }}</p>
-        </div>
-      </div>
-      {% else %}
-      <!-- SUCCESS - Display the retrieved information. -->
-      <div name="success" class="row" style="color: white;">
-        <div class="col p-5 mx-3 my-3"
-          style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
-          <table style="width: 100%;">
-            <tr>
-              {% if ip_version == 'IPv6' %}
-              <td style="font-weight: bold;">Public IPv6 Address:</td>
-              {% else %}
-              <td style="font-weight: bold;">Public IPv4 Address:</td>
-              {% endif %}
-              <td>{{ ip_address }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Region:</td>
-              <td>{{ ip_region }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Postal Code:</td>
-              <td>{{ ip_postal_code }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Country:</td>
-              <td>{{ ip_country }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Time Zone:</td>
-              <td>{{ ip_timezone }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Calling Code:</td>
-              <td>{{ ip_calling_code }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Autonomous System Number:</td>
-              <td>{{ ip_asn }}</td>
-            </tr>
-            <tr>
-              <td style="font-weight: bold;">Internet Service Provider:</td>
-              <td>{{ ip_isp }}</td>
-            </tr>
-          </table>
-        </div>
-        <div class="col p-2 mx-3 my-3"
-          style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
-          <table style="width: 100%;">
-            <tr>
-              <td style="font-weight: bold;">Map Location:</td>
-              <td>LAT: <span id="lat" value="{{ ip_lat }}">{{ ip_lat }}</span> &nbsp;&nbsp;&nbsp;LNG: <span id="lng" value="{{ ip_lng }}">{{ ip_lng }}</span></td>
-            </tr>
-          </table>
-          <div id="map" style="width: 100%; height: 30em;"></div>
-        </div>
-      </div>
-      {% endif %}
     </div>
+    
+      
+    <!-- ERROR - Display the error and reason. -->
+    <div name="invalid" style="min-height: 40vh;">
+      <div class="container-fluid mb-5 p-5 my-3"
+        style="width: 100%; background: linear-gradient(to right, rgba(0,0,0,.3), rgba(0,0,0,.3))">
+        <h1 class="text-white" style="text-align: center;">Error Error 404: Page not Found</h1>
+        <p class="text-white" style="text-align: center;">The page you tried to access does not exist.</p>
+      </div>
+    </div>
+  </div>
+    
+      
 
     <!-- Sticky footer -->
     <footer id="about" class="section footer-classic context-dark bg-image p-5"
