@@ -20,7 +20,8 @@ jobs:
           python-version: 3.9
       - name: Install dependencies
         run: |
+          cd tests/
           python -m pip install --upgrade pip
           pip install -r requirements.txt
       - name: Run unittests
-        run: python -m unittest ./tests/
+        run: python -m unittest -v
