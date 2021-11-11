@@ -2,7 +2,7 @@ from flask import Flask, redirect, url_for, render_template, request
 from api import errorFields, getSpecificIP, getOwnIP, rateLimitedFields
 from typing import Any, Dict, Union # For type-annotations.
 
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__)
 
 # ! This function handles both home() and searchIP() into one function.
 def ip_query(given_ip: Union[None, str]) -> Dict[str, Any]:
@@ -81,6 +81,10 @@ def searchIP():
                                ip_lat=fetched_data["lat"],
                                ip_lng=fetched_data["lng"],
                                )
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html'), 404
 
 # Driver Code
 if __name__ == '__main__':
