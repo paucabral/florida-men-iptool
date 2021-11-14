@@ -2,7 +2,7 @@
 This IP Tool (developed by the *Florida Men* team) is a web application that shows public IPv4/IPv6 information from the information fetched from [IP API](https://ipapi.co).
 
 <br>
-For easy access, a version of this project is deployed on *Heroku* and can be accessed from this [link](https://floridamen-iptool.herokuapp.com/). 
+For easy access, a version of this project is deployed on *Heroku* and can be accessed from the URL: https://floridamen-iptool.herokuapp.com/ 
 
 ###  Developers
 - **Cabral, Jose Paulo C.** -  Frontend, Operations
